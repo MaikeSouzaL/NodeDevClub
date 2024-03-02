@@ -1,6 +1,6 @@
 import app from './app';
+import PORT from './configPort';
 
-app.listen(3333),
-  () => {
-    console.log('🚀 server conectado 📡');
-  };
+app.listen(PORT, () => {
+  console.log(`🚀 Server conectado na porta ${PORT} 📡`);
+});

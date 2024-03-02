@@ -1,8 +1,33 @@
-import { Router } from 'express'; // estamos importando apenas a class Router do express
+import { Router } from 'express';
+import multer from 'multer';
+import multerConfig from './config/multer';
 
-const routes = new Router(); // sabendo que o Router e uma class estamos guardando ele em uma raviavel para facilitar o uso dele
+import UserController from './app/controllers/UserController';
+import LoginController from './app/controllers/LoginController';
+import ProductController from './app/controllers/ProductController';
+import CategoryController from './app/controllers/CategoryController';
+import OrderController from './app/controllers/OrderController';
 
-// criando a primerira rota
-routes.get('/', (req, res) => res.json({ message: ' Olá mundo 🌏' }));
+import authMiddleware from './app/middlewares/auth';
 
-export default routes; // apenas exportando o routes estamos exportando todas nossas rotas
+const upload = multer(multerConfig);
+const routes = new Router();
+
+routes.post('/users', UserController.store);
+routes.post('/login', LoginController.store);
+
+routes.use(authMiddleware);
+routes.post('/products', upload.single('file'), ProductController.store);
+routes.get('/products', ProductController.index);
+
+routes.post('/categories', CategoryController.store);
+routes.get('/categories', CategoryController.index);
+
+routes.post('/orders', OrderController.store);
+routes.get('/order/:id', OrderController.show);
+routes.get('/orders', OrderController.index);
+
+
+routes.put('/orders/:id', OrderController.update);
+
+export default routes;

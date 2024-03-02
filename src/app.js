@@ -1,6 +1,10 @@
 import express from 'express';
 import routes from './routes';
 
+import { resolve } from 'path';
+
+import './database';
+
 class App {
   constructor() {
     // sempre que for instanciada o metodo constructor sera o primeiro a ser chamado
@@ -12,6 +16,10 @@ class App {
   middlewares() {
     // este método "função" server para que possamos dar mais segurança ao nosso projeto
     this.app.use(express.json()); // iniciamos o nosso middleware infomando ao express que vamos usar dados como Json
+    this.app.use(
+      '/product-file',
+      express.static(resolve(__dirname, '..', 'uploads')),
+    );
   }
 
   routes() {
